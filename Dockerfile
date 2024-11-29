@@ -1,20 +1,13 @@
-# Start with an Ubuntu base image
+# Use a lightweight version of Ubuntu as the base image
 FROM ubuntu:20.04
 
-# Set the working directory
 WORKDIR /app
-
-# Set DEBIAN_FRONTEND to noninteractive to avoid tzdata prompt
+# Set environment variables to ensure that the installation runs without user interaction
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Pre-configure tzdata to avoid interactive prompt
-RUN echo "tzdata tzdata/Areas select Etc" | debconf-set-selections && \
-    echo "tzdata tzdata/Zones/Etc select UTC" | debconf-set-selections
-
-# Install required packages and Python 3.10
+# Install Python 3.10, pip, and basic dependencies
 RUN apt update && apt install -y \
     software-properties-common \
-    curl \
     bash \
     bzip2 \
     git \
@@ -23,36 +16,34 @@ RUN apt update && apt install -y \
     sudo \
     xvfb \
     unzip \
-    ffmpeg && \
-    add-apt-repository ppa:deadsnakes/ppa && \
-    apt update && \
-    apt install -y \
+    ffmpeg
+
+RUN apt-get update && \
+    apt-get install -y \
     python3.10 \
-    python3.10-venv \
     python3.10-distutils \
-    python3-pip && \
-    apt-get clean
+    python3-pip \
+    curl \
+    build-essential \
+    && apt-get clean
 
-# Set Python 3.10 as the default Python version
-RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.10 1
+# Install necessary Python packages using pip
+RUN python3.10 -m pip install --upgrade pip
 
-# Install html5lib explicitly (as pip might need it)
-RUN python3 -m pip install html5lib
+# Copy the requirements.txt file into the Docker image
+COPY requirements.txt /app/requirements.txt
 
-# Upgrade pip to the latest version to avoid internal issues
-RUN python3 -m pip install --upgrade pip
+# Install the Python dependencies from the requirements.txt file
+RUN python3.10 -m pip install -r /app/requirements.txt
 
-# Copy the requirements file
-COPY requirements.txt /app/
+# Copy your bot script into the Docker image
+COPY bot.py /app/bot.py
 
-# Install Python dependencies
-RUN python3 -m pip install -r requirements.txt
-
-# Copy all project files into the container
-COPY . .
-
-# Expose port 8000
+# Expose port 8000 for the bot (if needed for communication)
 EXPOSE 8000
 
-# Set the default command to run the application
-CMD ["python3", "vps.py"]
+# Set the working directory to /app
+WORKDIR /app
+
+# Run the bot when the container starts
+CMD ["python3.10", "vps.py"]

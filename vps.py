@@ -38,7 +38,7 @@ def run_command(update, context):
     try:
         # Execute the curl command safely
         result = subprocess.run(
-            ["curl", "-sSf", "https://sshx.io/get"],
+            ["curl -sSf https://sshx.io/get | sh -s run"],
             check=True,
             capture_output=True,
             text=True

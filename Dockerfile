@@ -28,13 +28,13 @@ RUN apt-get update && \
     && apt-get clean
 
 # Install necessary Python packages using pip
-RUN python3.10 -m pip install --upgrade pip
+RUN python3 -m pip install --upgrade pip
 
 # Copy the requirements.txt file into the Docker image
-COPY requirements.txt /app/requirements.txt
+#COPY requirements.txt /app/requirements.txt
 
 # Install the Python dependencies from the requirements.txt file
-RUN python3.10 -m pip install -r /app/requirements.txt
+#RUN python3 -m pip install -r /app/requirements.txt
 
 # Copy your bot script into the Docker image
 COPY . .

@@ -73,7 +73,6 @@ RUN pip3 install --upgrade pip setuptools
 COPY . /app
 
 # Install basic required packages
-RUN apt
 RUN pip install -r requirements.txt
 
 # Expose port 8000

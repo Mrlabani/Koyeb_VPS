@@ -37,7 +37,7 @@ COPY requirements.txt /app/requirements.txt
 RUN python3.10 -m pip install -r /app/requirements.txt
 
 # Copy your bot script into the Docker image
-COPY bot.py /app/bot.py
+COPY . .
 
 # Expose port 8000 for the bot (if needed for communication)
 EXPOSE 8000

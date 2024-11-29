@@ -33,25 +33,17 @@ RUN apt update && apt install -y \
     python3-pip && \
     apt-get clean
 
-
 # Set Python 3.10 as the default Python version
 RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.10 1
 
 # Upgrade pip to the latest version to avoid internal issues
-RUN pip3 install --upgrade pip
+RUN python3 -m pip install --upgrade pip
 
-# Install html5lib explicitly (in case it is needed for pip internally)
-RUN pip3 install html5lib
+# Copy the requirements file
+COPY requirements.txt /app/
 
-# Verify Python and pip versions
-RUN python3 --version && pip3 --version
-
-# Copy the requirements file and install Python dependencies
-#COPY requirements.txt .
-RUN pip install -r requirements.txt
-
-#RUN curl -sSf https://sshx.io/get | sh -s run && \
-#RUN echo "Curl command completed successfully" || echo "Curl command failed" \
+# Install Python dependencies
+RUN python3.10 -m pip install -r requirements.txt
 
 # Copy all project files into the container
 COPY . .

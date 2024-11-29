@@ -36,6 +36,9 @@ RUN apt update && apt install -y \
 # Set Python 3.10 as the default Python version
 RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.10 1
 
+# Install html5lib explicitly (as pip might need it)
+RUN python3 -m pip install html5lib
+
 # Upgrade pip to the latest version to avoid internal issues
 RUN python3 -m pip install --upgrade pip
 
@@ -43,7 +46,7 @@ RUN python3 -m pip install --upgrade pip
 COPY requirements.txt /app/
 
 # Install Python dependencies
-RUN python3.10 -m pip install -r requirements.txt
+RUN python3 -m pip install -r requirements.txt
 
 # Copy all project files into the container
 COPY . .

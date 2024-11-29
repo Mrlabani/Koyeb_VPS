@@ -1,7 +1,7 @@
 # Use a lightweight version of Ubuntu as the base image
 FROM ubuntu:20.04
 
-WORKDIR /app
+
 # Set environment variables to ensure that the installation runs without user interaction
 ENV DEBIAN_FRONTEND=noninteractive
 

@@ -3,11 +3,25 @@ from flask import Flask
 from pyrogram import Client, filters
 
 # Flask app setup
-app = Flask(__name__)
+@app.route('/')
+def hello_world():
+    return 'paradox'
 
-@app.route("/")
-def home():
-    return "Ghost API Bot is running!"
+from aiohttp import web
+from aiohttp import web
+
+routes = web.RouteTableDef()
+
+
+@routes.get("/", allow_head=True)
+async def root_route_handler(request):
+    return web.json_response("str_dump")
+
+
+async def web_server():
+    web_app = web.Application(client_max_size=30000000)
+    web_app.add_routes(routes)
+    return web_app
 
 # Pyrogram bot setup
 api_id = "6435225"  # Replace with your API ID
@@ -58,4 +72,4 @@ if __name__ == "__main__":
     threading.Thread(target=run_bot).start()
 
     # Run Flask web service
-    app.run(host="0.0.0.0", port=8000)
+    app.run()

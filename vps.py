@@ -27,7 +27,7 @@ async def web_server():
     await site.start()
 
 # PTB bot setup
-BOT_TOKEN = "7863196804:AAHLuwSibBQf4denufOtuflKDinvzHgRfDw"  # Replace with your bot token
+BOT_TOKEN = "7837580863:AAHKiccCBX1mvo4Xm5luQBwel4bc300nI2s"  # Replace with your bot token
 
 def start(update, context):
     """Handles the /start command."""
